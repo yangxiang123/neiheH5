@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["pages-my-collectionPullnew"],{"82f3":function(o,l,n){"use strict";n.r(l);var e=n("f0c5"),i=Object(e["a"])({},void 0,void 0,!1,null,null,null,!1,void 0,void 0);l["default"]=i.exports}}]);

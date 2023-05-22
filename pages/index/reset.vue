@@ -1,11 +1,16 @@
 <template>
 	<view class="page">
-		<!-- <cu-custom bgColor="bg-white" :isBack="true">
-	
-		<block slot="content">重置密码</block>
-	
-	</cu-custom> -->
-		<image src="/static/nh/logo.png" mode="widthFix"></image>
+		<cu-custom bgColor="transparent" :isBack="false"></cu-custom>
+		<view class="top_box u-flex u-row-center">
+			<view class="top_text u-flex u-row-center">
+				<text>HELLO !</text>
+				<text>WELCOME TO</text>
+			</view>
+			<image src="/static/nh/logo.png"></image>
+			<view class="btn_text  u-flex u-row-center">
+				优质艺术文创
+			</view>
+		</view>
 		<view class="form">
 			<!-- <view class="flex align-center">
 
@@ -25,7 +30,7 @@
 			<view class="flex align-center inp">
 				<input type="tel" v-model="code" placeholder="请输入4位数验证码" placeholder-class="placesty" class=" flex-sub">
 				<view style="width: 61rpx;"></view>
-				<view @click="sendcode" class="text-white font26">
+				<view @click="sendcode" class="font26" style="color: #5E5E5E;">
 					{{showText==true ? security_code : second+'s'}}
 				</view>
 			</view>
@@ -141,16 +146,42 @@
 </script>
 
 <style lang="scss">
-	page {
-		background: #000;
-	}
-
 	.page {
-		background: url('@/static/nh/login.gif') no-repeat;
-		background-size: 100% 100%;
+		background: #F0F0F0;
 		height: 100vh;
 		padding: 0 44rpx;
 	}
+
+	.top_box {
+		padding: 50rpx 0;
+		flex-direction: column;
+
+		.top_text {
+			flex-direction: column;
+			font-size: 24rpx;
+			font-family: Helvetica-Bold-Regular, Helvetica-Bold;
+			font-weight: 400;
+			color: #191919;
+			line-height: 28rpx;
+		}
+
+		image {
+			width: 330rpx;
+			height: 166rpx;
+			margin: 40rpx 0 20rpx;
+		}
+
+		.btn_text {
+			width: 180rpx;
+			height: 34rpx;
+			border-radius: 17rpx;
+			border: 2rpx solid #2B2B2B;
+			font-size: 20rpx;
+			font-family: Helvetica-Bold-Regular, Helvetica-Bold;
+
+		}
+	}
+
 
 	.hui {
 		font-size: 24rpx;
@@ -178,7 +209,7 @@
 		margin: 0 auto;
 		width: 662rpx;
 		height: 100rpx;
-		background: rgba(42, 38, 46, .8);
+		background: linear-gradient(149deg, #000000 0%, #404040 100%);
 		border-radius: 6rpx;
 		line-height: 100rpx;
 		text-align: center;
@@ -225,25 +256,23 @@
 		border-radius: 12rpx;
 	}
 
-	.form {}
-
 	.placesty {
 		font-size: 28rpx;
-		color: #AAAAAA;
+		color: #5E5E5E;
 	}
 
 	.inp {
-		border: solid 1rpx #999999;
-		height: 110rpx;
+		background: #FFFFFF;
+		height: 90rpx;
 		margin-top: 30rpx;
 		display: flex;
 		align-items: center;
-		border-radius: 110rpx;
-		padding: 0 34rpx;
+		border-radius: 90rpx;
+		padding: 0 30rpx;
 
 		input {
 			height: 100%;
-			color: #fff !important;
+			color: #5E5E5E !important;
 			font-size: 28rpx;
 		}
 	}

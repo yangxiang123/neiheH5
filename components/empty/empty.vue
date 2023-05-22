@@ -1,29 +1,10 @@
 <template>
-	<view class="page">
-		<view class="empty" v-if="show" :style="{
-		marginTop: marginTop + 'rpx'
-	}">
-			<image src="./img/address.png" v-if="mode == 'address'"></image>
-			<image src="./img/list.png" v-if="mode == 'list'"></image>
-			<image src="./img/message.png" v-if="mode == 'message'"></image>
-			<image src="./img/order.png" v-if="mode == 'order'"></image>
-			<image src="./img/search.png" v-if="mode == 'search'"></image>
-			<image src="./img/news.png" v-if="mode == 'news'"></image>
-			<image src="./img/favor.png" v-if="mode == 'favor'"></image>
-			<image src="./img/history.png" v-if="mode == 'history'"></image>
-			<image src="./img/coupon.png" v-if="mode == 'coupon'"></image>
-			<image src="./img/permission.png" v-if="mode == 'permission'"></image>
-			<image src="./img/car.png" v-if="mode == 'car'"></image>
-			<image src="./img/page.png" v-if="mode == 'page'"></image>
-			<image src="./img/list.png" v-if="mode == 'data'"></image>
-			<image src="./img/list.png" v-if="mode == 'recommend'"></image>
-			<image src="./img/list.png" v-if="mode == 'object'"></image>
-
-
+	<view class="empty_box">
+		<view class="empty" v-if="show" :style="{marginTop: marginTop + 'rpx', marginBottom :marginBottom + 'rpx'}">
+			<image :src="icons[mode].icon"></image>
 			<view class="text">
-				{{icons[mode]}}
+				{{text ? text : icons[mode]['text']}}
 			</view>
-
 		</view>
 	</view>
 </template>
@@ -40,37 +21,82 @@
 			// 组件距离上一个元素之间的距离
 			marginTop: {
 				type: [String, Number],
-				default: 0
+				default: 100
+			},
+			// 组件距离下一个元素之间的距离
+			marginBottom: {
+				type: [String, Number],
+				default: 100
 			},
 			// 显示哪个图标
 			mode: {
 				type: String,
 				default: 'data'
 			},
+			// 显示文字
+			text: {
+				type: String,
+			}
 		},
 		data() {
 			return {
 				icons: {
-					car: '购物车为空',
-					page: '页面不存在',
-					search: '没有搜索结果',
-					address: '没有收货地址',
-					order: '暂无订单',
-					coupon: '没有优惠券',
-					news: '暂无资讯',
-					message: '消息列表为空',
-					list: '暂无记录',
-					data: '暂无数据',
-					recommend: '暂无推荐',
-					object: '暂无藏品'
-				},
+					car: {
+						text: '购物车为空',
+						icon: require('./img/car.png')
+					},
+					page: {
+						text: '页面不存在',
+						icon: require('./img/page.png')
+					},
+					search: {
+						text: '没有搜索结果',
+						icon: require('./img/search.png')
+					},
+					address: {
+						text: '没有收货地址',
+						icon: require('./img/address.png')
+					},
+					order: {
+						text: '暂无订单',
+						icon: require('./img/order.png')
+					},
+					coupon: {
+						text: '没有优惠券',
+						icon: require('./img/coupon.png')
+					},
+					favor: {
+						text: '暂无收藏',
+						icon: require('./img/favor.png')
+					},
+					permission: {
+						text: '无权限',
+						icon: require('./img/permission.png')
+					},
+					history: {
+						text: '暂无浏览记录',
+						icon: require('./img/history.png')
+					},
+					news: {
+						text: '无新闻列表',
+						icon: require('./img/news.png')
+					},
+					message: {
+						text: '消息列表为空',
+						icon: require('./img/message.png')
+					},
+					data: {
+						text: '暂无数据',
+						icon: require('./img/list.png')
+					}
+				}
 			};
 		}
 	}
 </script>
 
-<style lang="scss">
-	.page {
+<style lang="scss" scoped>
+	.empty_box {
 		width: 100%;
 		display: flex;
 		justify-content: center;
@@ -91,6 +117,5 @@
 	.text {
 		text-align: center;
 		color: #c0c4cc;
-
 	}
 </style>

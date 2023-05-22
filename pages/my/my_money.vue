@@ -12,6 +12,11 @@
 			<view class="title">官方钱包　</view>
 			<view class="btn" @click="util.urlTo('/pages/my/money')">进入</view>
 		</view>
+		<view class="lists">
+			<view class="title">连连钱包　</view>
+			<view class="btn" @click="util.urlTo('/pages/my/lianlian/wallet')">进入</view>
+		</view>
+
 
 	</view>
 </template>
@@ -78,10 +83,15 @@
 			box-sizing: border-box;
 			// background: linear-gradient(270deg,#1a1a1a,rgba(21,21,21,.62));
 			background: url('@/static/bg/lv_bg.png') no-repeat center;
-			background-size: contain;
+			background-size: cover;
+			background-repeat: no-repeat;
+			// background-attachment: fixed;
 
 			&:nth-child(2) {
 				background: url('@/static/bg/bg2.png') no-repeat center;
+			}
+			&:nth-child(3) {
+				background: url('@/static/bg/bg3.png') no-repeat center;
 			}
 
 			.title {

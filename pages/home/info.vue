@@ -214,9 +214,13 @@
 				})
 			},
 			getUserInfo() {
-				this.util.getUserInfo().then(res => {
+				this.util.request('user/index', {}, 'POST').then(res => {
 					this.user = res;
 				})
+				// this.util.getUserInfo().then(res => {
+				// 	console.log(res)
+				// 	this.user = res;
+				// })
 			},
 			getData() {
 				this.util.request('goods/goods_msg', {
@@ -321,7 +325,7 @@
 					title: '等待中',
 
 				})
-				if (this.user.real == 0) {
+				if (!this.user.real_name) {
 					this.show_pay = true
 					uni.hideLoading()
 					this.util.urlTo('../index/shiming');

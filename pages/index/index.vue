@@ -1,49 +1,43 @@
 <template>
 	<view class="page">
-		<!-- <cu-custom bgColor="transparent" :isBack="false"></cu-custom> -->
-		<!-- <view class="topbak"></view> -->
-
-		<!-- <view class="content1"> -->
-		<image src="/static/nh/logo.png" mode="widthFix"></image>
+		<cu-custom bgColor="transparent" :isBack="false"></cu-custom>
+		<view class="top_box u-flex u-row-center">
+			<view class="top_text u-flex u-row-center">
+				<text>HELLO !</text>
+				<text>WELCOME TO</text>
+			</view>
+			<image src="/static/nh/logo.png"></image>
+			<view class="btn_text  u-flex u-row-center">
+				优质艺术文创
+			</view>
+		</view>
 		<view class="form">
-			<!-- <view class="flex align-center">
-				<view class="font26 padding-left-xs hui">
-					手机号码
-				</view>
-			</view> -->
 			<view class="inp u-flex u-row-between">
 				<input type="tel" v-model="mobile" placeholder="请输入手机号" placeholder-class="placesty" class="">
 				<image src="/static/nh/user.png" mode="widthFix"></image>
 			</view>
-			<!-- <view class="flex align-center" style="margin-top: 46rpx;">
-
-				<view class="font26 padding-left-xs hui">
-					密码
-				</view>
-			</view> -->
 			<view class="inp u-flex u-row-between">
 				<input type="password" v-model="psd" placeholder="请输入密码" placeholder-class="placesty">
 				<image src="/static/nh/password.png" mode="widthFix"></image>
 			</view>
-
 			<view style="margin-top: 70rpx;">
 				<u-button type="primary" shape="circle" :loading="loading" class="submit font30" hover-class="none"
 					@click="login">
 					登 录
 				</u-button>
-				<view class="flex align-center font26" style="margin-top: 30rpx;">
-					<view class="flex-sub col-999" @click="util.urlTo('reg')">
+				<view class="flex align-center font26" style="margin-top: 36rpx;color: #5E5E5E;">
+					<view class="flex-sub" @click="util.urlTo('reg')">
 						注册账号
 					</view>
-					<view class="col-999" @click="util.urlTo('reset')">
+					<view @click=" util.urlTo('reset')">
 						忘记密码?
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="flex font26 margin-top agreement">
-			<view class="flex col-999">
-				<radio :checked="radio" color="#3B3F47" style="transform: scale(.7);" @tap="radio = !radio"></radio>
+			<view class="flex">
+				<radio :checked="radio" color="#5E5E5E" style="transform: scale(.7);" @tap="radio = !radio"></radio>
 				<view class="u-m-l-15" @tap="radio = !radio">已阅读并同意</view>
 				<view @click="util.urlTo('../my/agreement?id=2')">《用户服务协议》</view>
 				<view @click="util.urlTo('../my/agreement?id=1')">《隐私权益》</view>
@@ -140,29 +134,39 @@
 					password: this.psd,
 					wg_token: this.token
 				}, 'POST').then(res => {
-					uni.setStorageSync('info', res.userinfo)
-					uni.setStorageSync('token', res.userinfo.token)
-					uni.setStorageSync('im_token', res.im_token.token)
+					this.loading = false;
+					try {
+						uni.setStorageSync('info', res.userinfo)
+						uni.setStorageSync('token', res.userinfo.token)
+						// uni.setStorageSync('im_token', res.im_token.token)
+					} catch (e) {
+						console.log(e)
+					}
+					
+					uni.switchTab({
+						url: '/pages/home/index'
+					})
 
 					//登陆上去之后重新获取数据刷新页面
-					_mixins.methods.$socketSend({
-						action: 'checkToken',
-						data: res.im_token.token,
-					}, function(res) {
-						// console.log(res)
-						uni.hideLoading()
-						// uni.reLaunch({
-						// 	url: '../chat/index',
-						// });
-					});
+					// _mixins.methods.$socketSend({
+					// 	action: 'checkToken',
+					// 	data: res.im_token.token,
+					// }, function(res) {
+					// 	// console.log(res)
+					// 	uni.hideLoading()
+					// 	// uni.reLaunch({
+					// 	// 	url: '../chat/index',
+					// 	// });
+					// });
 
 					this.util.request('user/index', {}, 'POST').then(res => {
 						uni.setStorageSync('userInfo', res)
 					})
+
+
+				}).catch(e => {
+
 					this.loading = false;
-					uni.switchTab({
-						url: '/pages/home/index'
-					})
 				})
 			},
 			isShowimage(e) {
@@ -178,8 +182,7 @@
 
 <style lang="scss">
 	.page {
-		background: url('@/static/nh/login.gif') no-repeat;
-		background-size: 100% 100%;
+		background: #F0F0F0;
 		height: 100vh;
 		padding: 0 44rpx;
 	}
@@ -188,7 +191,37 @@
 		font-size: 28rpx;
 		font-family: Source Han Sans CN-Regular, Source Han Sans CN;
 		font-weight: 400;
-		color: #9F9F9F;
+		color: #5E5E5E;
+	}
+
+	.top_box {
+		padding: 50rpx 0;
+		flex-direction: column;
+
+		.top_text {
+			flex-direction: column;
+			font-size: 24rpx;
+			font-family: Helvetica-Bold-Regular, Helvetica-Bold;
+			font-weight: 400;
+			color: #191919;
+			line-height: 28rpx;
+		}
+
+		image {
+			width: 330rpx;
+			height: 166rpx;
+			margin: 40rpx 0 20rpx;
+		}
+
+		.btn_text {
+			width: 180rpx;
+			height: 34rpx;
+			border-radius: 17rpx;
+			border: 2rpx solid #2B2B2B;
+			font-size: 20rpx;
+			font-family: Helvetica-Bold-Regular, Helvetica-Bold;
+
+		}
 	}
 
 	/* 
@@ -226,7 +259,7 @@
 		margin: 0 auto;
 		width: 662rpx;
 		height: 100rpx;
-		background: rgba(42, 38, 46, .8);
+		background: linear-gradient(149deg, #000000 0%, #404040 100%);
 		line-height: 100rpx;
 		text-align: center;
 		color: #fff;
@@ -247,12 +280,12 @@
 	}
 
 	input {
-		color: #fff;
+		color: #5E5E5E;
 		font-size: 28rpx;
 	}
 
 	.plsty {
-		color: #8A8A8A;
+		color: #5E5E5E;
 		font-size: 26rpx;
 	}
 
@@ -287,12 +320,12 @@
 
 	.inp {
 		width: 100%;
-		height: 110rpx;
-		background: hsla(0, 0%, 60%, 0);
-		border-radius: 110rpx;
+		height: 90rpx;
+		background: #FFFFFF;
+		border-radius: 90rpx;
 		padding: 0 40rpx;
 		box-sizing: border-box;
-		border: 1px solid #cad3df;
+		// border: 1px solid #cad3df;
 		margin-top: 50rpx;
 
 		image {
@@ -307,5 +340,6 @@
 		left: 44rpx;
 		right: 44rpx;
 		justify-content: center;
+		color: #5E5E5E;
 	}
 </style>

@@ -1,64 +1,85 @@
 <template>
 	<view class="page">
-		<u-navbar :is-back="false" title="我的">
-			<view class="u-slot-right">
-				<view class="set" @click="util.urlTo('/pages/my/info')">
-					<u-icon name="setting" color="#444" size="48"></u-icon>
-				</view>
-			</view>
-		</u-navbar>
-		<!-- <view class="bg-white">
-			<cu-custom bgColor="bg-white" :isBack="false">
-				<block slot="content" class="">我的</block>
-				<block slot="right">
-					<view class="set" @click="util.urlTo('/pages/my/setting')">
-						<u-icon name="setting" color="#444" size="48"></u-icon>
-					</view>
-				</block>
-			</cu-custom>
-		</view> -->
-
-		<view class="top-box">
+		<view class="top-box" :style="{'padding-top':CustomBar+'px'}">
 			<view class="my">
 				<image :src="info.avatar" mode="" class="my_img"></image>
 				<view class="my_text">
 					<view class="" style="">{{info.nickname}}</view>
-
-				</view>
-			</view>
-			<view class="bot">
-				<view class="flex align-center">
-					<view class="hui">区块链地址:{{info.blockuserid}} </view>
-					<image src="/static/my/copy2.png" mode="" class="hui_img" @click="util.copy(info.blockuserid)">
-					</image>
-				</view>
-				<view class="btn_box u-flex justify-between">
-					<view class="btn_mone u-flex justify-center" @click="util.urlTo('/pages/my/my_collection')">
-						<image src="/static/new/btn1.png" mode=""></image> 我的藏品
-					</view>
-					<view class="btn_mone u-flex justify-center" @click="gomy_money()">
-						<image src="/static/new/btn2.png" mode=""></image>进入钱包
+					<view class="flex align-center" style="margin-top:10rpx;">
+						<view class="hui">{{info.blockuserid}} </view>
+						<image src="/static/my/copy.png" mode="" class="hui_img" @click="util.copy(info.blockuserid)">
+						</image>
 					</view>
 				</view>
 			</view>
-
+			<view class="btn_box u-flex justify-between">
+				<view class="btn_mone u-flex justify-center" @click="util.urlTo('/pages/my/my_collection')">我的藏品</view>
+				<view class="btn_mone u-flex justify-center" @click="gomy_money">进入钱包</view>
+			</view>
 		</view>
-
-		<view class="content">
+		<view class="my_box">
 			<view class="lists" v-for="(item,index) in lists" :key="index" @click="todeil(index,item.url)">
-				<view class="list_left">
-					<image :src="item.img" mode=""></image>
-					{{item.name}}
-				</view>
-				<view class="">
-					<text class="renz" v-if="index== 1">{{info.real == 0?'未认证':'已认证'}}</text>
-					<u-icon name="arrow-right" color="#444" size="36"></u-icon>
+				<image :src="item.img" mode=""></image>
+				<view class="">{{item.name}}</view>
+			</view>
+		</view>
+		<u-sticky h5-nav-height="0">
+			<u-tabs :list="tab_list" :is-scroll="false" :current="current" @change="change" active-color="#282828"
+				inactive-color="#999"></u-tabs>
+		</u-sticky>
+
+		<template v-if="list.length">
+			<view class="list_box">
+				<view v-for="(item,index) in list" :key="index">
+					<view class="lists_box" v-if="item.goods"
+						@click="util.urlTo('/pages/market/my_lists2?id='+item.goods_id+'&type1='+typeIndex+'&act='+current)">
+						<image :src="item.goods.goods_image" mode="aspectFill" class="min_img"></image>
+						<view class="num">x {{item.total_num}}</view>
+						<view class="text">
+							<view class="">{{item.goods.goods_name}}</view>
+							<view class="flex align-center flex-sub margin-top-xs">
+								<image :src="item.goods.publish_image"
+									style="width: 38rpx;height: 38rpx;border-radius: 50%;" mode="">
+								</image>
+								<view class="padding-left-sm font24 col-999 text-1" style="width: 120rpx;">
+									{{item.goods.publisher}}
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="lists_box" v-if="item.box"
+						@click="util.urlTo('/pages/market/my_boxlists2?id='+item.box_id+'&type1='+typeIndex+'&act='+current)">
+						<image :src="item.box.box_image" mode="aspectFill" class="min_img"></image>
+						<view class="num">x {{item.total_num}}</view>
+						<view class="text">
+							<view class="">{{item.box.box_name}}</view>
+							<view class="flex align-center flex-sub margin-top-xs">
+								<image :src="item.box.publish_image"
+									style="width: 38rpx;height: 38rpx;border-radius: 50%;" mode="">
+								</image>
+								<view class="padding-left-sm font24 col-999 text-1" style="width: 120rpx;">
+									{{item.box.publisher}}
+								</view>
+							</view>
+						</view>
+					</view>
 				</view>
 			</view>
-
-		</view>
-
-
+			<!-- 没有更多 -->
+			<view class="u-flex u-row-center u-p-b-30">
+				<u-loadmore status="nomore" color="#333" />
+			</view>
+		</template>
+		<!-- loading -->
+		<my-loading v-if="loading" style="background-color: #fff;"></my-loading>
+		<!-- 空状态 -->
+		<empty mode="data" v-else-if="!loading && !list.length" style="background-color: #fff;"></empty>
+		<u-back-top :scroll-top="scrollTop"></u-back-top>
+		
+		<u-mask :show="maskShow">
+			<my-loading v-if="true" style="margin-top: 400rpx;"></my-loading>
+		</u-mask>
+		
 	</view>
 </template>
 
@@ -66,9 +87,21 @@
 	export default {
 		data() {
 			return {
+				loading: false,
+				maskShow: false,
+				tab_list: [{
+					name: '藏品'
+				}, {
+					name: '盲盒'
+				}, {
+					name: '寄售中'
+				}, {
+					name: '已售出'
+				}],
+				current: 0,
 				info: {},
 				lists: [{
-						img: '/static/new/list1.png',
+						img: '/static/lists5.png',
 						name: '我的订单',
 						url: '/pages/my/order'
 					},
@@ -78,39 +111,103 @@
 					// 	url: '/pages/my/order?type=1'
 					// },
 					{
-						img: '/static/new/list2.png',
+						img: '/static/lists6.png',
 						name: '我的认证',
 						url: ''
 					},
 					{
-						img: '/static/new/list3.png',
+						img: '/static/lists10.png',
 						name: '账号与安全',
 						url: '/pages/my/info'
 					},
+
 					{
-						img: '/static/new/list4.png',
+						img: '/static/lists1.png',
 						name: '我的转赠记录',
 						url: '/pages/my/circulation'
 					},
 					{
-						img: '/static/new/list5.png',
+						img: '/static/lists7.png',
 						name: '关于我们',
 						url: '/pages/my/agreement?id=9'
 					},
 
 				],
-				goodsTag: null,
-				goodsbox: null,
 
-
+				list: [], // 列表数据
+				typeIndex: 0,
+				scrollTop: 0
 
 			}
 		},
 		onShow(e) {
 			this.getinfo();
-
+			// 获取数据
+			this.change(this.current);
+		},
+		onLoad(e) {
+			if(e.reg == 'true'){
+				//重新获取数据
+				this.util.request('user/index', {}, 'POST').then(res => {
+					uni.setStorageSync('info', res)
+					uni.setStorageSync('userInfo', res)
+				})
+				this.gomy_money()
+			}
+		},
+		onPageScroll(e) {
+			this.scrollTop = e.scrollTop;
 		},
 		methods: {
+			// 藏品
+			async get_cang_pin() {
+				this.list = await this.util.request('user/user_compound', {
+					type: 1
+				});
+				this.loading = false;
+			},
+			// 盲盒
+			async get_mang_he() {
+				this.list = await this.util.request('user/user_box', {
+					type: 1
+				});
+				this.loading = false;
+			},
+			// 寄售 || 售出
+			async get_ji_shou(type) {
+				this.list = await this.util.request('user/user_compound', {
+					type
+				});
+				let arr = await this.util.request('user/user_box', {
+					type
+				});
+				this.list = this.list.concat(arr);
+				this.loading = false;
+			},
+
+			change(index) {
+				this.current = index;
+				this.list = [];
+				this.loading = true;
+				if (index == 0) {
+					this.typeIndex = 0;
+					// 藏品
+					this.get_cang_pin();
+				} else if (index == 1) {
+					// 盲盒
+					this.typeIndex = 0;
+					this.get_mang_he();
+				} else if (index == 2) {
+					// 寄售中
+					this.typeIndex = 1;
+					this.get_ji_shou(2);
+				} else {
+					// 已售出
+					this.typeIndex = 2;
+					this.get_ji_shou(3);
+				}
+
+			},
 			tomore(e) {
 				if (e == 0) {
 					uni.navigateTo({
@@ -126,6 +223,8 @@
 				this.info = uni.getStorageSync('userInfo')
 				this.util.request('user/index', {}, 'POST').then(res => {
 					this.info = res;
+					uni.getStorageSync('info', res)
+					uni.getStorageSync('userInfo', res)
 				})
 			},
 			todeil(index, url) {
@@ -142,9 +241,24 @@
 				}
 			},
 			gomy_money() {
-				// let userInfo = uni.getStorageSync('info')
+				let userInfo = uni.getStorageSync('info')
+				
+				
+				//判断是否开户
+				if(!userInfo.is_acctopen){
+					//没有开户 访问开户接口
+					this.maskShow = true
+					this.util.request('Lianlian/openacct', {}).then(res => {
+						//跳转url
+						window.location.href=res.gateway_url
+					})
+					return
+				}
+				
+				
 				uni.navigateTo({
-					url: '/pages/my/my_money'
+					// url: '/pages/my/my_money'
+					url:'/pages/my/lianlian/wallet'
 				})
 				return
 				if (this.info.wallet_status == 0) {
@@ -170,71 +284,99 @@
 		background-color: #fafafa;
 	}
 
-	.set {
-		position: absolute;
-		right: 30rpx;
-		top: 20rpx;
-	}
 
-	.content {
-		margin: 0 30rpx;
-		// border: 1rpx solid;
-		border-radius: 30rpx;
-		padding: 0 40rpx;
-		background-color: #fff;
-		box-shadow: 0rpx 10rpx 24rpx 0rpx rgba(0, 0, 0, 0.03);
+	.list_box {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		padding: 30rpx;
+		animation: show_list .3s linear;
+		animation-fill-mode: forwards;
 
-		.lists {
-			height: 120rpx;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			border-bottom: 4rpx solid #F7F7F7;
+		.lists_box {
+			margin-bottom: 30rpx;
+			width: 330rpx;
+			// width: 330rpx;
+			// padding: 20rpx;
+			background-color: #fff;
+			box-shadow: 0px 20rpx 24rpx 0px rgba(0, 0, 0, 0.0313725508749485);
+			border-radius: 10rpx;
+			position: relative;
 
-			.list_left {
-				display: flex;
-				align-items: center;
+			.num {
+				padding: 5rpx 15rpx;
+				border-radius: 30rpx;
+				background-color: rgba(0, 0, 0, 0.4);
+				color: #fff;
+				font-size: 26rpx;
+				position: absolute;
+				right: 30rpx;
+				top: 260rpx;
+			}
+
+			.top_float {
+				width: 100%;
+				height: 70rpx;
+				line-height: 70rpx;
+				text-align: center;
+				background-color: #FFFFFF;
+				opacity: 0.5;
+				border-radius: 20rpx 20rpx 0px 0px;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+
+			.min_img {
+				border-radius: 6rpx;
+				width: 330rpx;
+				height: 330rpx;
+			}
+
+			.text {
+				// padding: 20rpx 0 0rpx 8rpx;
+				padding: 28rpx 0 34rpx 32rpx;
 				font-size: 28rpx;
+				font-family: Segoe UI-Bold, Segoe UI;
 				font-weight: bold;
-				color: #000;
+				color: #282828;
 
-				image {
-					width: 32rpx;
-					height: 32rpx;
-					margin-right: 25rpx;
+
+				.price {
+					margin-top: 20rpx;
+					font-size: 40rpx;
+					font-weight: bold;
+					color: #282828;
+				}
+
+				.num {
+					font-size: 24rpx;
+					font-weight: 400;
+					color: #848484;
 				}
 			}
-
-			.renz {
-				font-size: 28rpx;
-				font-weight: bold;
-				color: #000;
-				margin-right: 15rpx;
-			}
-		}
-
-		.lists:last-child {
-			border-bottom: none !important;
 		}
 	}
-
-
-
-
-
 
 
 
 	.top-box {
+		padding: 20rpx 30rpx;
+		background: linear-gradient(307deg, #1E2127 0%, #3B3F47 100%);
+		padding-bottom: 40rpx;
 
-		background: #F3D36F;
-		width: 690rpx;
-		margin: 30rpx auto;
-		border-radius: 30rpx;
+		.set {
+			padding-top: 20rpx;
+			display: flex;
+			flex-direction: row-reverse;
+
+			image {
+				width: 48rpx;
+				height: 48rpx;
+			}
+		}
 
 		.my {
-			padding: 20rpx 30rpx;
-			margin-top: 30rpx;
 			display: flex;
 			align-items: center;
 
@@ -249,39 +391,53 @@
 				font-size: 36rpx;
 				font-family: PingFang SC-中黑体, PingFang SC;
 				font-weight: bold;
-				color: #444;
-			}
-		}
+				color: #FFFFFF;
 
-		.bot {
-			border-radius: 0 0 30rpx 30rpx;
-			margin-top: 30rpx;
-			padding: 20rpx 20rpx;
-			background-color: #E9C770;
-
-			.hui {
-				color: #444;
-				width: 550rpx;
-				margin-left: 20rpx;
-				font-weight: bold;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-				overflow: hidden;
+				.hui {
+					color: #9DA6AD;
+					width: 182rpx;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					overflow: hidden;
 
 
-			}
+				}
 
-			.hui_img {
-				width: 28rpx;
-				height: 28rpx;
-				margin-left: 20rpx;
-				border-radius: 0%;
+				.hui_img {
+					width: 28rpx;
+					height: 28rpx;
+					margin-left: 20rpx;
+					border-radius: 0%;
+				}
 			}
 		}
 
 		.btn_box {
-			margin-top: 20rpx;
+			margin-top: 44rpx;
 
+		}
+	}
+
+	.my_box {
+		display: flex;
+		flex-wrap: wrap;
+		border-radius: 0rpx;
+		box-shadow: 0px 8rpx 24rpx 0px rgba(0, 0, 0, 0.019999999329447746);
+		padding: 40rpx 0;
+		background-color: #fff;
+
+		.lists {
+			text-align: center;
+			font-size: 20rpx;
+			font-family: Segoe UI-Regular, Segoe UI;
+			font-weight: 400;
+			color: #282828;
+			width: 20%;
+
+			image {
+				width: 70rpx;
+				height: 70rpx;
+			}
 		}
 	}
 

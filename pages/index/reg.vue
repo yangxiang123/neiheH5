@@ -1,60 +1,39 @@
 <template>
 	<view class="page">
-		<!-- <cu-custom bgColor="bg-white" :isBack="false">
-		
-			<block slot="content">注册熊猫艺术</block>
-		
-		</cu-custom> -->
-		<!-- <view class="topbak">
-
-		</view> -->
-		<image src="/static/nh/logo.png" mode="widthFix"></image>
+		<cu-custom bgColor="transparent" :isBack="false"></cu-custom>
+		<view class="top_box u-flex u-row-center">
+			<view class="top_text u-flex u-row-center">
+				<text>HELLO !</text>
+				<text>WELCOME TO</text>
+			</view>
+			<image src="/static/nh/logo.png"></image>
+			<view class="btn_text  u-flex u-row-center">
+				优质艺术文创
+			</view>
+		</view>
 		<view class="form">
-			<!-- <view class="flex align-center">
-				<view class="font26 padding-left-xs hui">
-					账号
-				</view>
-			</view> -->
 			<view class="inp">
 				<input type="tel" v-model="mobile" placeholder="请输入手机号" placeholder-class="placesty">
 			</view>
-			<!-- <view class="flex align-center" style="margin-top: 46rpx;">
-
-				<view class="font26 padding-left-xs hui">
-					验证码
-				</view>
-			</view> -->
 			<view class="flex align-center inp">
 				<input type="number" v-model="code" placeholder="请输入4位数验证码" placeholder-class="placesty"
 					class="flex-sub">
 				<view style="width: 61rpx;"></view>
-				<view @click="sendcode" class="text-white font26">
+				<view @click="sendcode" class="font26" style="color: #5E5E5E;">
 					{{showText==true ? security_code : second+'s'}}
 				</view>
 			</view>
-			<!-- <view class="flex align-center" style="margin-top: 46rpx;">
-
-				<view class="font26 padding-left-xs hui">
-					设置密码
-				</view>
-			</view> -->
 			<view class="inp">
 				<input type="password" v-model="password" placeholder="请输入密码" placeholder-class="placesty">
 			</view>
-			<!-- <view class="flex align-center" style="margin-top: 46rpx;">
-
-				<view class="font26 padding-left-xs hui">
-					邀请码
-				</view>
-			</view> -->
 			<view class="inp">
 				<input type="text" v-model="qrcode" placeholder="请输入邀请码" placeholder-class="placesty">
 			</view>
-			<view class="flex align-center col-999 font26 margin-top-xl">
+			<view class="flex align-center font26 margin-top-xl" style="color: #5E5E5E;">
 				<view class="flex align-center">
 					<radio :checked="radio" color="#3B3F47" style="transform: scale(.5);" @tap="radio=!radio">
 					</radio>
-					<view class="col-999" @tap="radio=!radio">已阅读并同意</view>
+					<view class="" @tap="radio=!radio">已阅读并同意</view>
 					<view @click="util.urlTo('../my/agreement?id=2')">《用户服务协议》</view>
 					<view @click="util.urlTo('../my/agreement?id=1')">《隐私权益》</view>
 				</view>
@@ -63,7 +42,7 @@
 				<view class="submit font30" @click="submit">
 					注册
 				</view>
-				<view class="flex-sub text-white" style="margin:30rpx;" @click="util.urlTo('index')">
+				<view class="flex-sub" style="margin:30rpx; color: #5E5E5E;" @click="util.urlTo('index')">
 					登录
 				</view>
 
@@ -192,16 +171,42 @@
 </script>
 
 <style lang="scss">
-	page {
-		background: #000;
-	}
-
 	.page {
-		background: url('@/static/nh/login.gif') no-repeat;
-		background-size: 100% 100%;
+		background: #F0F0F0;
 		height: 100vh;
 		padding: 0 44rpx;
 	}
+
+	.top_box {
+		padding: 50rpx 0;
+		flex-direction: column;
+
+		.top_text {
+			flex-direction: column;
+			font-size: 24rpx;
+			font-family: Helvetica-Bold-Regular, Helvetica-Bold;
+			font-weight: 400;
+			color: #191919;
+			line-height: 28rpx;
+		}
+
+		image {
+			width: 330rpx;
+			height: 166rpx;
+			margin: 40rpx 0 20rpx;
+		}
+
+		.btn_text {
+			width: 180rpx;
+			height: 34rpx;
+			border-radius: 17rpx;
+			border: 2rpx solid #2B2B2B;
+			font-size: 20rpx;
+			font-family: Helvetica-Bold-Regular, Helvetica-Bold;
+
+		}
+	}
+
 
 	.topbak {
 		background: url('@/static/login_wtb_bg.jpg') no-repeat center;
@@ -244,7 +249,7 @@
 		margin: 0 auto;
 		width: 662rpx;
 		height: 100rpx;
-		background: rgba(42, 38, 46, .8);
+		background: linear-gradient(149deg, #000000 0%, #404040 100%);
 		border-radius: 6rpx;
 		line-height: 100rpx;
 		text-align: center;
@@ -269,10 +274,6 @@
 		border-radius: 12rpx;
 	} */
 
-	.plsty {
-		color: #8A8A8A;
-		font-size: 26rpx;
-	}
 
 	.mar {
 		margin: 0rpx 40rpx;
@@ -300,21 +301,21 @@
 
 	.placesty {
 		font-size: 28rpx;
-		color: #AAAAAA;
+		color: #5E5E5E;
 	}
 
 	.inp {
-		border: solid 1rpx #999999;
-		height: 110rpx;
+		background: #FFFFFF;
+		height: 90rpx;
 		margin-top: 30rpx;
 		display: flex;
 		align-items: center;
-		border-radius: 110rpx;
+		border-radius: 90rpx;
 		padding: 0 30rpx;
 
 		input {
 			height: 100%;
-			color: #fff !important;
+			color: #5E5E5E !important;
 			font-size: 28rpx;
 		}
 	}

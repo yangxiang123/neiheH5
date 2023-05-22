@@ -57,17 +57,14 @@
 		methods: {
 			// 详情
 			go_detail(item) {
-				if (this.current == 0) {
-					// 首发
-					uni.navigateTo({
-						url: '../home/info?type=0&id=' + item.id
-					})
-				} else {
-					// 寄售
-					uni.navigateTo({
-						url: './index_detail?type=0&id=' + item.goods_id
-					})
-				}
+				let url = '';
+				// 首发
+				if (this.current == 0) url = `../home/info?type=0&id=${item.id}`;
+				// 寄售
+				else url = `./index_detail?type=0&id=${item.goods_id}`;
+				uni.navigateTo({
+					url
+				})
 			},
 			change(index) {
 				this.current = index;

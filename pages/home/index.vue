@@ -2,6 +2,7 @@
 	<view>
 		<!-- banner -->
 		<image class="banner" src="/static/banner/banner.gif"></image>
+		<view class="share_box" @click="util.urlTo('/pages/my/invite')">邀请好友</view>
 		<!-- abount -->
 		<view class="abount">
 			<view class="abount_box flex align-end justify-center">
@@ -68,6 +69,7 @@
 			getUserInfos() {
 				this.util.getUserInfo().then(res => {
 					this.user = res;
+					uni.setStorageSync('info', res)
 				})
 			},
 		},
@@ -83,6 +85,23 @@
 	.banner {
 		width: 100%;
 		height: 440rpx;
+	}
+
+	.share_box {
+		position: fixed;
+		right: 0;
+		top: 500rpx;
+		padding: 32rpx 22rpx;
+		background: linear-gradient(180deg, #000000 0%, #232323 100%);
+		border-radius: 14rpx 0 0 14rpx;
+		font-size: 32rpx;
+		font-family: PingFangSC-Regular-Regular, PingFangSC-Regular;
+		font-weight: 400;
+		color: #FFFFFF;
+		line-height: 36rpx;
+		writing-mode: vertical-lr;
+		z-index: 999;
+
 	}
 
 	.index_img {

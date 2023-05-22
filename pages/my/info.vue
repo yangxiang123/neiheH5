@@ -47,7 +47,8 @@
 				</image>
 			</view>
 		</view>
-		<view @click="topsd" class="bg-white  flex align-center margin-bottom-sm cell_down_border" style="padding: 40rpx;">
+		<view @click="topsd" class="bg-white  flex align-center margin-bottom-sm cell_down_border"
+			style="padding: 40rpx;">
 			<view class="flex align-center flex-sub">
 				设置操作密码
 			</view>
@@ -56,7 +57,8 @@
 				</image>
 			</view>
 		</view>
-		<view @click="toka" class="bg-white  flex align-center margin-bottom-sm cell_down_border" style="padding: 40rpx;">
+		<view @click="toka" class="bg-white  flex align-center margin-bottom-sm cell_down_border"
+			style="padding: 40rpx;">
 			<view class="flex align-center flex-sub">
 				提现银行卡
 			</view>
@@ -152,7 +154,8 @@
 			getinfo() {
 				this.util.request('user/index', {}, 'POST').then(res => {
 					this.info = res;
-					this.nickname = this.info.nickname
+					this.nickname = this.info.nickname;
+					uni.setStorageSync('info', res)
 				})
 			},
 			settx() {
@@ -225,12 +228,12 @@
 			font-size: 28rpx;
 			line-height: 39rpx;
 			color: #2c2c34;
-			width:100%;
-			
+			width: 100%;
+
 		}
 
 		.botton {
-			margin-top:30rpx;
+			margin-top: 30rpx;
 			height: 80rpx;
 			text-align: center;
 			border-radius: 40rpx;
@@ -247,19 +250,21 @@
 		font-size: 24rpx;
 		color: #999999;
 	}
-	.cell_down_border{
+
+	.cell_down_border {
 		border-bottom: 2rpx solid #F7F7F7;
 	}
-	.out_btn{
+
+	.out_btn {
 		position: relative;
 		width: 95vw;
 		margin: 100rpx auto;
 		text-align: center;
-		
+
 		line-height: 100rpx;
 		color: #fff;
 		// font-weight: 600;
 		font-size: 36rpx;
-		background: linear-gradient(270deg,#1a1a1a,#666);
+		background: linear-gradient(270deg, #1a1a1a, #666);
 	}
 </style>

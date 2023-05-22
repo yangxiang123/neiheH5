@@ -1,18 +1,18 @@
 {
-    "id": "i671-lucky",
-    "name": "抽奖大转盘-分享",
-    "version": "v1.0.1",
-    "description": "抽奖大转盘",
-    "keywords": [
-        "插件",
-        "抽奖",
-        "大转盘",
-        "Canvas"
-    ],
-    "dcloudext": {
-        "category": [
-            "前端组件",
-            "通用组件"
-        ]
-    }
+  "name": "nei_he",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://e.coding.net/fengyangkeji/neiheshucang/nei-he.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "html2canvas": "^1.0.0"
+  }
 }

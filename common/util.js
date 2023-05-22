@@ -40,6 +40,7 @@ function request(url, data = {}, method = "POST") {
 				} else if (res.data.code == 401) {
 					toLogin();
 				} else if (res.data.msg) {
+					resolve(res.data.data);
 					_this.showToast(res.data.msg);
 				}
 			},

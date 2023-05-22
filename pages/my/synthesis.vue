@@ -92,7 +92,7 @@
 				}, {
 					name: '缤纷合成'
 				}],
-				current: 1,
+				current: 0,
 				page: 1,
 				last_page: 0
 			}

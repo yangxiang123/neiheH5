@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["pages-home-brickmall"],{c346:function(o,i,l){"use strict";l.r(i);var n=l("f0c5"),c=Object(n["a"])({},void 0,void 0,!1,null,null,null,!1,void 0,void 0);i["default"]=c.exports}}]);
